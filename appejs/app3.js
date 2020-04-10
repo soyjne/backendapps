@@ -13,6 +13,13 @@ app.get('/enamorandosede/:algo', function (req, res) {
   res.render('love', {thingVar: mything});
 });
 
+app.get('/posts', function (req, res) {
+  var myposts = [{title:"Titulo1", author:"Jorge"},
+                 {title:"Titulo2", author:"Pedro"}, 
+                 {title:"Titulo3", author:"Mara"}];
+  res.render('posts', {posts: myposts});
+});
+
 
 app.get('*', function (req, res) {
   res.send('Sorry, page not found. What are you doing with your life?');
