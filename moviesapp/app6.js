@@ -4,18 +4,19 @@ var request = require('request');
 
 app.set('view engine', 'ejs');
 
-var moviesdata = ""
-
-request('http://www.omdbapi.com/?s=spain&apikey=thewdb', function(error, response, body) {
-    if (!error && response.statusCode == 200){
-        var bodyJson = JSON.parse(body);
-        moviesdata = bodyJson;
-    };
+app.get("/", function(req, res) { 
+    res.render("search");
 });
 
-
 app.get("/movies", function(req, res) { 
-    res.render("moviespage", {moviesDic: moviesdata});
+    var termabuscar = req.query.abuscar
+    var url = 'http://www.omdbapi.com/?s=' + termabuscar + '&apikey=thewdb'
+    request(url, function(error, response, body) {
+        if (!error && response.statusCode == 200){
+            var moviesdata = JSON.parse(body);
+            res.render("moviespage", {moviesDic: moviesdata});
+        };
+    }); 
 });
 
 
