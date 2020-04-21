@@ -1,0 +1,9 @@
+apiVersion: 1.0.0
+metadata:
+  name: example-devfile
+projects:
+- name: moviesapp
+  clonePath: src/github.com/soyjne/backendapps/moviesapp
+  source:
+    type: git
+    location: https://github.com/soyjne/backendapps/moviesapp.git
