@@ -1,6 +1,62 @@
 var express = require("express");
 var app = express();
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose")
+
+mongoose.connect('mongodb://localhost:27017/cat_app', { useNewUrlParser: true, useUnifiedTopology: true });
+
+var friendSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  temperament: String
+});
+
+var Friend = mongoose.model("Friend", friendSchema);
+
+//Agregar friend a la DB
+
+//var amigo = new Friend({
+//  name: "Maru",
+//  age: 31,
+//  temperament: "Remix"
+//});
+
+//amigo.save (function(err,friend){
+//  if (err){
+//    console.log("HUBO UN ERROR")
+//  }else{
+//    console.log("FRIEND AGREGADO")
+//    console.log(friend)
+//  };
+//});
+
+//Otra opcion para agregar friend a la DB
+
+Friend.create ({
+  name: "Colo",
+  age: 31,
+  temperament: "Calvo"
+}, function(err,friend){
+  if (err){
+    console.log("HUBO UN ERROR")
+  }else{
+    console.log("FRIEND AGREGADO")
+    console.log(friend)
+  };
+});
+
+// Consultar friends
+
+Friend.find ({}, function(err,friends){
+  if (err){
+    console.log("HUBO UN ERROR")
+  }else{
+    console.log("FRIENDS ENCONTRADOS")
+    console.log(friends)
+  };
+});
+
+
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
