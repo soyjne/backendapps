@@ -32,29 +32,29 @@ var Friend = mongoose.model("Friend", friendSchema);
 
 //Otra opcion para agregar friend a la DB
 
-Friend.create ({
-  name: "Colo",
-  age: 31,
-  temperament: "Calvo"
-}, function(err,friend){
-  if (err){
-    console.log("HUBO UN ERROR")
-  }else{
-    console.log("FRIEND AGREGADO")
-    console.log(friend)
-  };
-});
+// Friend.create ({
+//   name: "Colo",
+//   age: 31,
+//   temperament: "Calvo"
+// }, function(err,friend){
+//   if (err){
+//     console.log("HUBO UN ERROR")
+//   }else{
+//     console.log("FRIEND AGREGADO")
+//     console.log(friend)
+//   };
+// });
 
 // Consultar friends
 
-Friend.find ({}, function(err,friends){
-  if (err){
-    console.log("HUBO UN ERROR")
-  }else{
-    console.log("FRIENDS ENCONTRADOS")
-    console.log(friends)
-  };
-});
+// Friend.find ({}, function(err,friends){
+//   if (err){
+//     console.log("HUBO UN ERROR")
+//   }else{
+//     console.log("FRIENDS ENCONTRADOS")
+//     console.log(friends)
+//   };
+// });
 
 
 
@@ -69,13 +69,43 @@ app.get('/', function (req, res) {
 
 app.post("/addFriend", function(req, res) {
     var newFriend = req.body.newfriend;
-    friends.push(newFriend);
-    res.redirect("/friends");
+    var newAge = req.body.newage;
+    var newSkill = req.body.newskill;
+    // Add newFriend to to the db
+    Friend.create ({
+      name: newFriend,
+      age: newAge,
+      temperament: newSkill
+    }, function(err,friend){
+      if (err){
+        console.log("HUBO UN ERROR")
+      }else{
+        res.redirect("/friends");
+      };
+    });
 });
 
 app.get("/friends", function(req, res) {
-    res.render("friendspage", {friendsVar: friends});
+  Friend.find ({}, function(err,allfriends){
+      if (err){
+        console.log("HUBO UN ERROR")
+      }else{
+        res.render("friendspage", {friendsVar: allfriends});
+      };
+  });    
 });
+
+//SHOW GET
+app.get("/friends/:id", function(req, res) {
+  Friend.findById (req.params.id, function(err,foundFriend){
+    if (err){
+      console.log("HUBO UN ERROR " + err)
+    }else{
+      res.render("show", {friendsVar: foundFriend});
+    }
+  });    
+});
+
 
 app.get('*', function (req, res) {
   res.send('Sorry, page not found. What are you doing with your life?');
